@@ -108,5 +108,15 @@ $(document).ready(function () {
             closeBox("resetPwdPopup");
         }, false);
     }
+
+    createListeners(document.getElementById("password-help"), "Votre mot de passe doit faire au moins 8 caractères et contenir au moins: 1 caractère spécial, 1 chiffre, 1 minuscule, 1 majuscule.");
+
+    document.getElementById("info").addEventListener("click", function(e) {
+        e.stopPropagation();
+    }, false);
+
+    document.body.addEventListener("click", function() {
+        closeInfo();
+    }, false);
     
 });

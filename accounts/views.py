@@ -187,4 +187,17 @@ def checkSecretAnswer(request):
             result["new_pwd_token"] = users.generate_token(idUser)
 
     return JsonResponse(result)
+
+@csrf_exempt
+def showSecretAnswer(request):
+    result = dict()
+    if request.session.get("logged_user", False):
+        if not request.POST.get("view_secret_answer", None) is None:
+            idUser = request.POST.get("idUser", 0)
+            actual_pwd = request.POST.get("actual_pwd", "")
+            actual_pwd_conf = request.POST.get("actual_pwd_conf", "")
+            users = Users()
+            result = users.get_secret_question_and_answer(idUser, actual_pwd, actual_pwd_conf)
+    
+    return JsonResponse(result)
         

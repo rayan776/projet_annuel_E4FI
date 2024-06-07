@@ -25,5 +25,6 @@ urlpatterns = [
     path('getBlockedList/', views.getBlockedList, name=''),
     path('resetPassword', views.resetPassword, name='resetPassword'),
     path('checkUsername/', views.checkUsername, name='checkUsername'),
-    path('checkSecretAnswer/', views.checkSecretAnswer, name='checkSecretAnswer')
+    path('checkSecretAnswer/', views.checkSecretAnswer, name='checkSecretAnswer'),
+    path('showSecretAnswer/', views.showSecretAnswer, name='showSecretAnswer')
 ]

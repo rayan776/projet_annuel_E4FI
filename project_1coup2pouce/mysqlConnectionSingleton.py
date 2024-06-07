@@ -24,7 +24,8 @@ class MySQLConnectionSingleton:
             if cursor.with_rows:
                 result = cursor.fetchall()
         except Exception as e:
-            result = [e]
+            cursor.close()
+            raise Exception(e)
         finally:
             cursor.close()
             

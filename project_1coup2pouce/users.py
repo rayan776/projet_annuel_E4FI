@@ -226,6 +226,22 @@ class Users:
                 return True
         
         return False
+
+    def get_secret_question_and_answer(self, idUser, actual_pwd, actual_pwd_conf):
+        result = dict()
+        result["ok"] = False
+
+        are_infos_ok = (actual_pwd == actual_pwd_conf)
+        if are_infos_ok:
+            query_result = self.mySQLconnection.execute_prepared_query(f"SELECT secretQuestion, secretAnswer FROM users WHERE idUser = %s AND password = %s", (idUser, security.hashStrToSha512(actual_pwd)), True)
+            are_infos_ok = len(query_result)==1
+            if are_infos_ok:
+                result["ok"] = True
+                result["secret_question"] = query_result[0][0]
+                result["secret_answer"] = security.aes_decrypt(ast.literal_eval(query_result[0][1]))
+        
+        return result
+
     
     def generate_token(self, idUser, length=32):
         return security.create_token(idUser, length)

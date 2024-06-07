@@ -70,7 +70,9 @@
             {% if isConnected and current_user_ID != view_profile_infos.idUser  %}
             <div id="user_actions">
                 <div style="display: flex;">
+                    {% if not view_profile_infos.blocked and not view_profile_infos.has_blocked_current_user %}
                     <a target="_blank" class="buttons_main" href="http://127.0.0.1:8000/privatemessages/?writeTo={{ view_profile_infos.username }}"><div style="display:flex"><i style="padding-right:25px; margin:auto" class="fa-solid fa-envelope"></i><div>Contacter</div></div></a>
+                    {% endif %}
                     <form style="display:flex; flex:1" action="" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="idUserTarget" value="{{ view_profile_infos.idUser }}">
@@ -133,7 +135,7 @@
                                 <label for="new_pwd_conf">Confirmer le nouveau mot de passe</label>
                                 <input id="new_pwd_conf" type="password" name="new_pwd_conf">
                             </div>
-                            <button type="submit" class="buttons_main" name="change_pwd">Changer</button>
+                            <button type="submit" class="buttons_main" name="change_pwd">Changer mon mot de passe</button>
                         </form>
                         <form id="change_pwd" style="width: 33%; display:flex; flex-direction:column; padding-right:10px; border-right:1px dotted blue" action="" method="POST">
                             {% csrf_token %}
@@ -162,6 +164,27 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div id="viewSecretAnswer">
+                    <div style="width: 100%; display:flex; flex-direction:column">
+                        <div style="color:red" id="secret_error"></div>
+                        <div style="font-weight:bold; margin-bottom:20px">Voir ma réponse secrète</div>
+                        <label for="actual_pwd_secretAnswer">Mot de passe actuel</label>
+                        <input style="margin:auto" id="actual_pwd_secretAnswer" type="password" name="actual_pwd">
+                        <label for="actual_pwd_conf_secretAnswer">Confirmez votre mot de passe actuel</label>
+                        <input style="margin:auto" id="actual_pwd_conf_secretAnswer" type="password" name="actual_pwd_conf">
+                        <input type="hidden" id="idUser" name="idUser" value="{{ view_profile_infos.idUser }}">
+                    </div>
+                    <button style="width:30%; margin-top:20px" type="submit" class="buttons_main" id="btn_view_secret_answer" name="view_secret_answer">Voir</button>
+                </div>
+
+                <div id="infoSecretAnswer" class="info-bubble">
+                    <div style="width:100%; text-align: right;">
+                        <i id="btnCloseInfo" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+                    </div>
+                    <div id="secret_question_header">Question secrète</div>
+                    <div id="secret_question"></div>
+                    <div id="secret_answer"></div>
                 </div>
             {% endif %}
         </div>

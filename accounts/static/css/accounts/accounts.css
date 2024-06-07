@@ -83,6 +83,12 @@ input {
     pointer-events: none;
 }
 
+#label_new_pwd #password-help {
+    position: relative;
+    left: 10px;
+    margin: auto 0px auto 0px;
+}
+
 #label_new_pwd {
     width: 100%; 
     margin-top:20px; 
@@ -184,6 +190,28 @@ input {
     transition:transform 0.3s ease, opacity 0.3s ease;
 }
 
+#infoSecretAnswer {
+    transition: all 0.3s ease;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+#secret_question {
+    font-style: italic;
+    border-bottom: 1px dashed blue;
+    padding-bottom: 10px;
+}
+
+#secret_question_header {
+    font-weight: bold;
+}
+
+#secret_answer {
+    margin: auto;
+    font-size: 2em;
+}
+
 .info-bubble {
     position: absolute;
     pointer-events: none;
@@ -208,4 +236,10 @@ input {
     position: relative;
     left: 5px;
     bottom:5px;
+}
+
+#viewSecretAnswer {
+    margin-top:20px;
+    padding-top:10px;
+    border-top:1px dotted blue;
 }

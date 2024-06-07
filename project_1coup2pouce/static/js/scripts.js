@@ -1,3 +1,33 @@
+async function showInfo(e, textToShow) {
+    let info_bubble = document.getElementById("info");
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    info_bubble.style.display = 'block';
+    await sleep(100);
+    info_bubble.style.pointerEvents = 'all';
+    info_bubble.innerText = textToShow;
+    info_bubble.style.opacity = 1.0;
+    info_bubble.style.left = rect.left + window.scrollX + 'px';
+    info_bubble.style.top = rect.top + window.scrollY + 'px';
+
+    info_bubble.style.transform = "translateX(20px)";
+}
+
+async function closeInfo() {
+    let info_bubble = document.getElementById("info");
+    info_bubble.style.opacity = 0.0;
+    info_bubble.style.transform = "translateX(-15px)";
+    await sleep(100);
+    info_bubble.style.display = 'none';
+}
+
+function createListeners(helper, text) {
+    helper.addEventListener("click", function(e) {
+        e.stopPropagation();
+        showInfo(e, text);
+    }, false);
+}
+
 function closeBox(divName) {
     const divToClose = document.getElementById(divName);
     if (divToClose != null) {

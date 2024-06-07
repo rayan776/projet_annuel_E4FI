@@ -136,7 +136,7 @@
             </div>
 
             <div id="review">
-                {% if isConnected and level != "banned" and not is_owner_current_user %}
+                {% if isConnected and level != "banned" and not is_owner_current_user and valid == 1 %}
                     <div id="reviewForm">
                         {% if not has_current_user_already_commented %} 
                         <div style="font-weight: bold;">Donnez votre avis sur cette annonce.</div>

@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <link rel="stylesheet" href="{% static 'css/announces/style.css' %}"/>
+    <script src="{% static 'scripts/announces/scripts_popup.js' %}"></script>
+    <script src="{% static 'scripts/announces/scripts_thumbsup.js' %}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block privatemessages %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+        {% if announce_message != "" %}
+        <div id="announcePopup" class="popup">
+            <div style="width:100%; text-align: right;">
+                <i id="btnClosePopup" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+            </div>
+            <div style="font-size:2em; padding:5px">
+                <div>{{ announce_message }}</div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if not not_found and not announce_deleted %}
+            <div id="announceToolbar">
+                {% if not valid %}
+                <h2 style="color:red">Annonce non approuvée</h2>
+                {% endif %}
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {% if level == "admin" %}
+                        {% if not valid %}
+                            <input type="submit" name="validate" value="Approuver l'annonce" class="buttons_main buttons_allow">
+                        {% else %}
+                            <input type="submit" name="invalidate" value="Censurer l'annonce" class="buttons_main buttons_danger">
+                        {% endif %}
+                    {% endif %}
+                    {% if level == "admin" or is_owner_current_user %}
+                        <input type="submit" name="delete" value="Supprimer l'annonce" class="buttons_main buttons_danger">
+                    {% endif %}
+                </form>
+            </div>
+            <div id="announce">
+                {% if is_owner_current_user %}
+                    <form style="display: flex; flex-direction: column; flex:1" action="" method="post">
+                    {% csrf_token %}
+                {% endif %}
+                <div id="titreEtNote">
+                    {% if is_owner_current_user %}
+                        <input style="width:70%; min-width:40em; margin-right:auto; font-size:1em; font-weight:bold" type="text" name="announceTitle" value="{{ intitule }}">
+                    {% else %}
+                        <div id="intitule">{{ intitule }}</div>
+                    {% endif %}
+                    {% if announce_score > 0.0 %}
+                        <div style="margin-right: 10px;">{{ announce_score }}/5</div>
+                        {% for star in score_range %}
+                            {% if star < announce_score_stars %}
+                            <div style="color:#ffc700; font-size:2em">★ </div>
+                            {% else %}
+                            <div style="color:grey; font-size:2em">★ </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div style="margin-left:10px">({{ nb_reviews }})</div>
+                    {% endif %}
+                </div>
+                {% if not is_owner_current_user %}
+                    <div id="category">{{ catName }} - {{ typeAnnounce }}</div>
+                    <div id="localisationAnnonce">{{localisation.city}}{{ localisation.town }}{{localisation.village}}, {{ localisation.state }}, {{localisation.country }}</div>
+                {% else %}
+                    <div id="editAnnounceCatAndType">
+                        <select style="margin-top:10px; border-radius: 10px; min-width:15em; width:50%" class="form-control" name="announceCat">
+                            {% for cat in categories %}
+                                {% if cat.categoryName == catName %}
+                                <option value="{{ cat.idCategory }}">{{ cat.categoryName }}</option>
+                                {% endif %}
+                            {% endfor %}
+                            {% for cat in categories %}
+                                {% if cat.categoryName != catName %}
+                                <option value="{{ cat.idCategory }}">{{ cat.categoryName }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        {% if typeAnnounce == "Je propose" %}
+                        <input id="jePropose" type="radio" name="announceType" value="1" checked>
+                        {% else %}
+                        <input id="jePropose" type="radio" name="announceType" value="1">
+                        {% endif %}
+                        <label for="jePropose">Je propose</label>
+                        {% if typeAnnounce == "Je recherche" %}
+                        <input id="jeRecherche" type="radio" name="announceType" value="2" checked>
+                        {% else %}
+                        <input id="jeRecherche" type="radio" name="announceType" value="2">
+                        {% endif %}
+                        <label for="jeRecherche">Je recherche</label>
+                    </div>
+                    <input style="margin-top:10px; width:50%; min-width: 30em;" class="form-control" name="announceLocation" type="text" value="{{localisation.city}}{{ localisation.town }}{{localisation.village}}, {{ localisation.state }}, {{localisation.country }}">
+                {% endif %}
+                <div id="authorInfos">
+                    <div id="author"><a href="{% url 'viewProfile' username %}">{{ lastname }} {{ firstname }} ({{ username }})</a></div>
+                    <div id="dateAnnonce">{{ dateAnnounce|date:"d F Y" }}</div>
+                    {% if not is_owner_current_user %}
+                    <a target="_blank" class="buttons_login" style="margin-left:auto;" href="http://127.0.0.1:8000/privatemessages/?writeTo={{ username }}"><div style="display:flex"><i style="padding-right:25px; margin:auto" class="fa-solid fa-envelope"></i><div>Contacter l'auteur</div></div></a>
+                    {% endif %}
+                </div>
+                {% if not is_owner_current_user %}
+                    <div id="description">
+                        {% if description != "" %}
+                            {{ description }}
+                        {% else %}
+                            Pas de description.
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <textarea style="margin:auto; font-size:1.5em;" rows="7" name="announceDescription" class="form-control">{{ description }}</textarea>
+                {% endif %}
+
+                {% if is_owner_current_user %}
+                    <input type="submit" style="width: 50%; margin:10px auto 0px auto" name="edit" value="Modifier l'annonce" class="buttons_main">
+                    <div style="text-align: center; margin-top: 10px;">Votre annonce devra être de nouveau approuvée en cas de modification.</div>
+                    </form>
+                {% endif %}
+            </div>
+
+            <div id="review">
+                {% if isConnected and level != "banned" and not is_owner_current_user %}
+                    <div id="reviewForm">
+                        {% if not has_current_user_already_commented %} 
+                        <div style="font-weight: bold;">Donnez votre avis sur cette annonce.</div>
+                        <ul>
+                            <li>Votre commentaire ne doit pas être vide.</li>
+                        </ul>
+                        
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="rate">
+                                <input type="radio" id="star5" name="rate" value="5" checked/>
+                                <label for="star5" title="text">5 stars</label>
+                                <input type="radio" id="star4" name="rate" value="4" />
+                                <label for="star4" title="text">4 stars</label>
+                                <input type="radio" id="star3" name="rate" value="3" />
+                                <label for="star3" title="text">3 stars</label>
+                                <input type="radio" id="star2" name="rate" value="2" />
+                                <label for="star2" title="text">2 stars</label>
+                                <input type="radio" id="star1" name="rate" value="1" />
+                                <label for="star1" title="text">1 star</label>
+                            </div>
+                            <textarea class="form-control" style="width:100%" rows="5" name="reviewContent"></textarea>
+                            <input style="margin-top:10px" class="buttons_main" type="submit" name="newReview" value="Poster">
+                        </form>
+                        {% else %}
+                        <div>Vous avez déjà commenté cette annonce.</div>
+                        {% endif %}
+                    </div>
+                {% elif not isConnected %}
+                    <div>Il faut être connecté pour poster un avis ou évaluer un commentaire.</div>
+                {% elif role == "banned" %}
+                    <div>Vous êtes banni et ne pouvez donc pas poster d'avis ou évaluer un commentaire.</div>
+                {% elif valid == 0 %}
+                    <div>Les commentaires sont bloqués tant que l'annonce n'est pas approuvée.</div>
+                {% endif %}
+
+                {% if nb_reviews > 0 %}
+                <div style="font-size:2em; margin-top:10px; border-bottom: 5px dotted lightblue; padding-bottom:5px"> {{ nb_reviews }} avis</div>
+                <div id="reviewBox">
+                    {% for review in reviews %}
+                        <div class="commentBox">
+                            <div class="comment_author_date_note">
+                                <div class="commentAuthor"> 
+                                    <div><a href="{% url 'viewProfile' review.username %}">{{review.lastname}} {{review.firstname}} ({{ review.username }})</a></div>
+                                    <div style="font-weight: normal;">{{review.dateReview|date:"d F Y G:i"}}</div>
+                                </div>
+                                <div class="stars">
+                                    {% for star in score_range %}
+                                        {% if star < review.score %}
+                                        <div style="color:#ffc700; font-size:2em">★ </div>
+                                        {% else %}
+                                        <div style="color:grey; font-size:2em">★ </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <form>
+                                    {% csrf_token %}
+                                </form>
+                                <div class="review_thumbs">
+                                    <i id="up_{{ review.idReview }}" class="fa-solid fa-thumbs-up btnpointer thumbs thumbsup" style="color: green"></i>
+                                    <div class="scorePlus" id="scorePlus_{{ review.idReview }}">{{ review.scorePlus }}</div>
+                                    <i id="down_{{ review.idReview }}" class="fa-solid fa-thumbs-down btnpointer thumbs thumbsdown" style="margin-left: 15px; color: red"></i>
+                                    <div class="scoreMinus" id="scoreMinus_{{ review.idReview }}">{{ review.scoreMinus }}</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top:10px"> {{ review.content }} </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div style="font-size:2em; margin-top:10px">Aucun avis pour cette annonce.</div>
+                {% endif %}
+            </div>
+        {% endif %}
+{% endblock %}
+
+{% block change_background_link %}
+        {{ block.super }}
+{% endblock %}

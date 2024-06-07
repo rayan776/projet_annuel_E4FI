@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <link rel="stylesheet" href="{% static 'css/accounts/accounts.css' %}"/>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block privatemessages %}
+    {% if isConnected %}
+    {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    
+    <p>{{ registerMessage }}</p>
+    {% if isConnected %}
+        <h1>{{ fullname }}</h1>
+    {% else %}
+        {% if registerOK %}
+            <a style="font-size:20px" href="http://127.0.0.1:8000/">Retourner en page d'accueil</a>
+        {% else %}
+            <div> 
+                <p>Rejoignez nous, ou connectez vous et gérez votre compte si vous êtes déjà parmi nous. </p>
+                <div style="width:40%; margin:auto" class="displayFlex">
+                    <a style="margin:auto" class="buttons_main" href="http://127.0.0.1:8000/accounts/login">Se connecter</a>
+                    <a style="margin:auto" class="buttons_main" href="http://127.0.0.1:8000/accounts/register">Créer un compte</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    
+{% endblock %}
+
+{% block change_background_link %}
+        {% if isConnected %}
+            {{ block.super }}
+        {% endif %}
+{% endblock %}

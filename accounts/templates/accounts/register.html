@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <link rel="stylesheet" href="{% static 'css/accounts/accounts.css' %}"/>
+    <script src="{% static 'scripts/register.js' %}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block privatemessages %}
+    {% if isConnected %}
+    {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    
+        <h1> Créez votre compte et rejoignez 1coup2pouce </h1>
+        <div id="registerMsg">
+            {{ registerMessage }}
+        </div>
+        <div id="loginForm">
+            <form style="margin-top:20px" action="" method="POST">
+                {% csrf_token %}
+                <div>Nom de famille</div>
+                <div class="register-input">
+                    <input name="firstname" value="{{ firstname }}" type="text"/>
+                    <i class="fa-solid fa-circle-question name-help"></i>
+                </div>
+                <div>Prénom</div>
+                <div class="register-input">
+                    <input name="lastname" value="{{ lastname }}" type="text"/>
+                    <i class="fa-solid fa-circle-question name-help"></i>
+                </div>
+                <div>Nom d'utilisateur</div>
+                <div class="register-input">
+                    <input id="input_username" name="username" value="{{ username }}" type="text"/>
+                    <i id="username-help" class="fa-solid fa-circle-question"></i>
+                    <script>
+                        $(document).ready(function() {
+                            createListeners(document.getElementById("username-help"), "Votre nom d'utilisateur doit faire entre {{login_min_length}} et {{login_max_length}} caractères et ne peut contenir que des lettres et ce symbole: _");
+                        });
+                    </script>
+                </div>
+                <div style="font-size:0.8em; color:red" id="username_exists"></div>
+                <div>Mot de passe</div>
+                <div class="register-input">
+                    <input id="input_pwd" name="pwd" type="password"/>
+                    <i id="password-help" class="fa-solid fa-circle-question"></i>
+                </div>
+                <div>Confirmer le mot de passe</div>
+                <div class="register-input">
+                    <input name="pwdconf" type="password"/>
+                </div>
+                <div>Question secrète</div>
+                <div class="register-input">
+                    <input name="secretQuestion" value="{{ secretQuestion }}" type="text"/>
+                    <i id="secret-q-help" class="fa-solid fa-circle-question"></i>
+                </div>
+                <div>Réponse secrète</div>
+                <div class="register-input">
+                    <input name="secretAnswer" value="{{ secretAnswer }}" type="text"/>
+                    <i id="secret-a-help" class="fa-solid fa-circle-question"></i>
+                </div>
+                <div style="margin:auto">
+                    <input style="margin:auto; margin-top:20px; margin-bottom:20px" class="buttons_main" type="submit" name="registerAttempt" value="S'inscrire"/>
+                </div>
+            </form>
+            <div id="alreadyRegistered">
+                <div style="font-weight: bold;">Vous avez déjà un compte ?</div>
+                <a class="buttons_main" href="http://127.0.0.1:8000/accounts/login">Connectez-vous</a>
+            </div>
+        </div>
+
+        <div class="info-bubble" id="info"></div>
+
+        <div id="registerPopup" class="coup2pouce-box">
+            <div style="width:100%; text-align: right;">
+                <i id="btnClosePopup" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+            </div>
+            <div style="font-size:2em; padding:5px">
+                <div>{{ popup_message }}</div>
+            </div>
+        </div>
+    
+{% endblock %}
+
+{% block change_background_link %}
+        
+{% endblock %}

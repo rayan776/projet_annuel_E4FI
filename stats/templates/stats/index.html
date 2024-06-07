@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <link rel="stylesheet" href="{% static 'css/stats/style.css' %}"/>
+    <script src="{% static 'js/scripts.js' %}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block privatemessages %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div id="statsDiv">
+        <div class="statsSubdiv">
+            <div class="statsHeader">Statistiques du site</div>
+
+            <div class="statsName">Nombre d'utilisateurs</div>
+            <div class="statsVal">{{ stats.nb_users }}</div>
+
+            <div class="statsName">Nombre d'annonces</div>
+            <div class="statsVal">
+                {{ stats.nb_announces.total }}
+                <div style="color:#38A9DC">{{ stats.nb_announces.type1 }} annonces de type "Je propose"</div>
+                <div style="color:#6FAB25">{{ stats.nb_announces.type2 }} annonces de type "Je recherche"</div>
+            </div>
+
+            <div class="statsName">Nombre de commentaires</div>
+            <div class="statsVal">{{ stats.nb_reviews }}</div>
+
+            <div class="statsName">Annonces les mieux notées</div>
+            <div class="statsVal">
+            {% for ind, announce in stats.best_announces.items %}
+                <div style="margin-top:10px">
+                    <a style="margin-right:1em" href="http://127.0.0.1:8000/announces/viewAnnounce/{{ announce.idAnnounce }}">{{ announce.intitule }}</a>
+                    <div>
+                        <div style="display:flex; justify-content: center;">
+                            {% for star in stars %}
+                                {% if star < announce.score %}
+                                <div style="color:#ffc700; font-size:1.5em">★ </div>
+                                {% else %}
+                                <div style="color:grey; font-size:1.5em">★ </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div style="align-content: center; margin-left:10px">{{ announce.score|floatformat:1 }}/5</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+            <div class="statsName">Utilisateurs ayant posté le plus d'annonces</div>
+            <div class="statsVal">
+                {% if stats.users_with_most_announces != 0 %}
+                    <div> Annonces postées : {{ stats.users_with_most_announces.0.nb_announces }}</div>
+                    {% for ind, user in stats.users_with_most_announces.items %}
+                        <div class="statsUsernames"><a href="{% url 'viewProfile' user.username %}">{{ user.lastname }} {{ user.firstname }} ({{ user.username}})</a></div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="statsName">Utilisateurs ayant commenté le plus</div>
+            <div class="statsVal">
+                {% if stats.users_with_most_comments != 0 %}
+                    <div> Commentaires postés : {{ stats.users_with_most_comments.0.nb_reviews }}</div>
+                    {% for ind, user in stats.users_with_most_comments.items %}
+                        <div class="statsUsernames"><a href="{% url 'viewProfile' user.username %}">{{ user.lastname }} {{ user.firstname }} ({{ user.username}})</a></div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block change_background_link %}
+        {{ block.super }}
+{% endblock %}

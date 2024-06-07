@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <link rel="stylesheet" href="{% static 'css/privatemessages/style.css' %}"/>
+    <script src="{% static 'scripts/privatemessages/scripts.js' %}"></script>
+    <script src="{% static 'js/tab_container.js' %}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {{ block.super }}
+{% endblock %}
+
+{% block privatemessages %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <div id="dmContent">
+        <div id="dmBar" class="displayFlex">
+            <button id="btnSendMessage" class="buttons_main">Envoyer un message</button>
+        </div>
+
+        <div id="messages">
+            <div>Vos messages</div>
+            <div id="unread_msg" style="font-size:0.5em">{{ nb_unread }} messages non lus</div>
+        </div>
+        
+
+        <div class="tab-container">
+            <div class="tab active-tab" style="margin-right:10px" onclick="openTab('messagesRecus')">Messages reçus</div>
+            <div class="tab" onclick="openTab('messagesEnvoyes')">Messages envoyés</div>
+        </div>
+
+        <div class="active-content tab-content dm-table" id="messagesRecus">
+            {% if has_received %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Titre</td>
+                            <td>Reçu le</td>
+                            <td>Expéditeur</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, values in received.items %}
+                    {% if values.opened == 0 %}
+                    <tr class="msg unread" id="msg{{values.idMsg}}">
+                    {% else %}
+                    <tr class="msg" id="msg{{values.idMsg}}">
+                    {% endif %}
+                        <td>{{ values.title }}</td>
+                        <td>{{ values.dateMsg|date:"d F Y G:i" }}</td>
+                        <td><a href="{% url 'viewProfile' values.username %}">{{values.lastname}} {{values.firstname}} ({{ values.username }})</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div>Vous n'avez reçu aucun message pour le moment.</div>
+            {% endif %}
+        </div>
+        <div class="tab-content dm-table" id="messagesEnvoyes">
+            {% if has_sent %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>Titre</td>
+                            <td>Envoyé le</td>
+                            <td>Destinataire</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, values in sent.items %}
+                    <tr class="msg" id="msg{{values.idMsg}}">
+                        <td>{{ values.title }}</td>
+                        <td>{{ values.dateMsg|date:"d F Y G:i" }}</td>
+                        <td><a href="{% url 'viewProfile' values.username %}">{{values.lastname}} {{values.firstname}} ({{ values.username }})</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div>Vous n'avez envoyé aucun message pour le moment.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="sendMessages" class="coup2pouce-box">
+        <div style="width:100%; text-align: right;">
+            <i id="btnCloseSendDM" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+        </div>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <div id="sendForm">
+                <label for="toUser">Destinataire</label>
+                <input id="toUser" type="text" name="toUser">
+                
+                <label for="dmTitle">Titre</label>
+                <div style="font-size:0.75em">100 caractères maximum</div>
+                <input id="dmTitle" type="text" name="dmTitle">
+                
+                <label for="dmContent">Contenu</label>
+                <textarea class="form-control" id="dmContent" rows="5" name="dmContent"></textarea>
+
+                <input type="submit" class="buttons_main" name="sendDM" value="Envoyer">
+            </div>
+        </form>
+    </div>
+
+    {% if not writeTo is None %}
+        <script>
+            document.getElementById("toUser").value = `{{ writeTo }}`;
+            showBox(null, "sendMessages", "dm");
+        </script>
+    {% endif %}
+
+    <div id="viewMessage">
+        <div style="width:100%; text-align: right;">
+            <i id="btnCloseViewMessage" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+        </div>
+
+        <div id="viewMessageExp" class="viewMessageInfo">
+            <div style="font-weight: bold">Envoyé par</div>
+            <div id="viewMessageSentBy"><a id="viewMessageSentByA" target="_blank" href=""></a></div>
+        </div>
+
+        <div id="viewMessageDest" class="viewMessageInfo">
+            <div style="font-weight: bold">Destinataire</div>
+            <div id="viewMessageSentTo"><a id="viewMessageSentToA" target="_blank" href=""></a></div>
+        </div>
+
+        <div class="viewMessageInfo">
+            <div id="viewMessageDate"></div>
+        </div>
+        
+        <div class="viewMessageInfo">
+            <div style="font-weight: bold" id="viewMessageTitle"></div>
+        </div>
+        
+        <div id="messageContent" class="viewMessageInfo">
+            <div style="min-height: 10em;" id="viewMessageContent"></div>
+        </div>
+
+        <div style="margin-top:20px">
+            <button class="buttons_main" id="reply">Répondre</button>
+        </div>
+    </div>
+
+    {% if popup_message != "" %}
+        <div id="dmPopup" class="popup">
+            <div style="width:100%; text-align: right;">
+                <i id="btnClosePopup" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+            </div>
+            <div style="font-size:2em; padding:5px">
+                <div>{{ popup_message }}</div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div id="recipient" style="display:none; pointer-events: none;"></div>
+{% endblock %}
+
+{% block change_background_link %}
+        {{ block.super }}
+{% endblock %}

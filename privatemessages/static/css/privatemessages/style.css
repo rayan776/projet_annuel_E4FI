@@ -1,0 +1,100 @@
+#dmContent {
+    display: flex;
+    flex-direction: column;
+}
+
+#dmBar {
+    margin-top:10px;
+    padding-bottom:5px;
+    border-bottom:1px dotted green;
+}
+
+#dmBar > * {
+    margin:auto;
+}
+
+#messages {
+    padding-bottom:5px; 
+    margin-top: 50px; 
+    border-bottom:1px dotted green; 
+    font-size:2em;
+}
+
+#messageContent {
+    border: 1px solid green;
+    border-radius: 20px;
+    margin-top: 1em;
+    background-color: lightcyan;
+}
+
+#sendForm {
+    display: flex; 
+    flex-direction: column;
+}
+
+#sendForm > * {
+    margin:5px 0px 5px 0px;
+}
+
+#messagesEnvoyes {
+    display: none;
+    pointer-events: none;
+}
+
+#viewMessage {
+    position: absolute;
+    display: none;
+    pointer-events: none;
+    background-color: white;
+    border:2px solid blue;
+    border-radius:20px;
+    padding:10px;
+    flex-direction: column;
+    cursor:move;
+    width:25em;
+    box-shadow: rgba(8, 23, 247, 0.4) 0px 0px 15px 5px;
+}
+
+#viewMessage .buttons_main {
+    width: 100%;
+}
+
+.viewMessageInfo {
+    padding-bottom:10px;
+    border-bottom:1px dashed grey;
+}
+
+tr {
+    background-color: white;
+    color:black;
+    transition: all 0.6s ease;
+}
+
+.dm-table {
+    overflow: auto;
+    height: 780px;
+    border: 2px solid blue;
+    box-shadow: rgba(8, 23, 247, 0.4) 0px 0px 15px 5px;
+    width: 98%;
+    border-radius: 20px;
+    margin:20px auto 20px auto;
+}
+
+thead {
+    font-weight: bold;
+}
+
+tbody tr:hover {
+    background-color: #c4edf6;
+    transition: all 0.6s ease;
+}
+
+.unread {
+    font-weight: bold;
+    color:red;
+}
+
+.unread:hover {
+    font-weight: bold;
+    color:red;
+}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+        {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block privatemessages %}
+    {% if isConnected %}
+    {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div id="home_content">
+        <h1 style="font-size:20px;">Un coup de pouce pour toutes vos recherches entre particuliers</h1>
+        
+        <div>Rejoignez-nous, proposez vos services ou cherchez ce qui vous intéresse.</div>
+    </div>
+{% endblock %}
+
+{% block change_background_link %}
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script defer src="{% static 'js/fontawesome.js' %}"></script>
+    <script defer src="{% static 'js/brands.js' %}"></script>
+    <script defer src="{% static 'js/solid.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="{% static 'js/get_nb_unread_msg.js' %}"></script>
+    {% block linkrel %}
+
+    {% endblock linkrel %}
+    <title>1coup2pouce</title>
+</head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <div id="sidebarAndContent" class="displayFlex">
+            <div class="sidebar">
+                {% block sidebar %}
+                <div id="logo">
+                    <a href="http://127.0.0.1:8000/"><img style="width:100%" height="100px" src="{% static 'img/white_logo.png' %}" alt="Logo"/></a>
+                </div>
+                <div id="sidebarLinks">
+                    <a href="http://127.0.0.1:8000/announces/">
+                        <div id="announceLink" class="sidebarlink">
+                            <div class="sidebaricon">
+                                <i onmouseover="" class="fa-solid fa-circle-info fa-2xl"></i>
+                            </div>
+                            <div class="sidebarlinktitle">
+                                Annonces
+                            </div>
+                        </div>
+                    </a>
+                    {% block privatemessages %}
+                    <a href="http://127.0.0.1:8000/privatemessages/">
+                        <div id="dmLink" class="sidebarlink">
+                            <div class="sidebaricon">
+                                <div id="sidebar_unread">{{ nb_unread }}</div>
+                                <i class="fa-solid fa-envelope fa-2xl"></i>
+                            </div>
+                            <div class="sidebarlinktitle">
+                                Messages privés
+                            </div>
+                        </div>
+                    </a>
+                    {% endblock privatemessages %}
+                    <a href="http://127.0.0.1:8000/stats/">
+                        <div id="statsLink" class="sidebarlink">
+                            <div class="sidebaricon">
+                                <i class="fa-solid fa-ranking-star fa-2xl"></i>
+                            </div>
+                            <div class="sidebarlinktitle">
+                                Statistiques
+                            </div>
+                        </div>
+                    </a>
+                    {% block accountbubble %}
+                    <a href="http://127.0.0.1:8000/accounts/">
+                        <div id="myAccountLink" class="sidebarlink" id="sidebarlink_myAccount">
+                            <div class="sidebaricon">
+                                <div class="account-bubble">{{ initiales }}</div>
+                            </div>
+                            <div class="sidebarlinktitle">
+                                Mon compte
+                            </div>
+                        </div>
+                    </a>
+                    {% endblock accountbubble %}
+                </div>
+                
+                {% endblock sidebar %}
+            </div>
+
+                <div class="content">
+                    <div id="connectSignupDiv" class="displayFlex">
+                        {% if not isConnected %}
+                            <a class="buttons_login" style="margin-right:1em" href="http://127.0.0.1:8000/accounts/login">Se connecter</a>
+                            <a class="buttons_login" href="http://127.0.0.1:8000/accounts/register">Créer un compte</a>
+                        {% else %}
+                            <h3> Vous êtes connecté sous le login de {{ login }}</h3>
+                            <form style="margin-left:auto" action="http://127.0.0.1:8000/" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="logout" value="logout"/>
+                                <input type="submit" value="Se déconnecter" width="400" class="buttons_login"/>
+                            </form>
+                        {% endif %}
+                    </div>
+                    {% block content %}
+
+                    {% endblock content %}
+                </div>
+        </div>
+
+        {% block change_background_link %}
+            <script>
+                let module = `{{ module }}`;
+                let moduleDiv = document.getElementById(module);
+                if (moduleDiv) {
+                    moduleDiv.style.background = 'rgba(0, 0, 255, 0.5)';
+                }
+            </script>
+        {% endblock change_background_link %}
+    </body>
+    <footer>
+        <div>1coup2pouce Django Project - ESIEE Paris</div>
+    </footer>
+</html>

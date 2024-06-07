@@ -1,0 +1,45 @@
+#statsDiv {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.statsSubdiv {
+    border: 2px solid blue;
+    box-shadow: rgba(8, 23, 247, 0.4) 0px 0px 15px 5px;
+    margin:20px auto auto auto;
+    border-radius: 20px;
+    min-width: 410px;
+    width: 95%;
+}
+
+.statsHeader {
+    font-size:2em;
+    font-weight: bold;
+    padding:10px 0px 30px 0px;
+    border-bottom:1px dashed grey;
+}
+
+.statsVal {
+    font-size: 1.25em;
+    padding-bottom:1em;
+    border-bottom:1px dashed grey;
+}
+
+.statsName {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.best_stats {
+    display: flex;
+    justify-content: center;
+}
+
+.best_stats > * {
+    align-content: center;
+}
+
+.statsUsernames {
+    font-size: 0.75em;
+}

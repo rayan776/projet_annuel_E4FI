@@ -1,0 +1,264 @@
+#announcesMapParent {
+    position: relative;
+    width:100%;
+    padding-bottom:4em;
+}
+
+#mapFrame {
+    width:100%;
+    position: relative;
+}
+
+#announcesTopBar {
+    height:10%;
+    width:70%;
+    margin:auto;
+    align-content: center;
+}
+
+#announcesTopBar button {
+    margin: auto;
+}
+
+button {
+    height:3em;
+}
+
+#announces_table {
+    overflow: auto;
+    height: 780px;
+    border: 2px solid blue;
+    box-shadow: rgba(8, 23, 247, 0.4) 0px 0px 15px 5px;
+    width: 98%;
+    margin: auto;
+    border-radius: 20px;
+}
+
+#legende {
+    display:inline; 
+    pointer-events: all; 
+    left:2%; 
+    top:75%;
+    opacity:0.7;
+    transition: opacity 0.3s ease;
+}
+
+thead tr {
+    font-weight: bold;  
+}
+
+#legende:hover {
+    opacity: 1.0;
+    transition: opacity 0.3s ease;
+}
+
+.announceBox .buttons_main {
+    width: 100%;
+}
+
+.announceBox input[type=submit] {
+    margin-top:5em;
+}
+
+.announceBox form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.commentBox {
+    padding: 20px 0px 20px 0px;
+    border-bottom: 1px dashed green;
+}
+
+.commentAuthor {
+    font-weight: bold;
+    min-width: 40%;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: left;
+}
+
+.comment_author_date_note {
+    display: flex; 
+    width: 100%;
+    min-width:600px; 
+    align-content: center; 
+    text-align: center;
+}
+
+.review_thumbs {
+    display: flex;
+    width:6em;
+    margin: auto;
+}
+
+#editAnnounceCatAndType {
+    display: flex;
+    width: 50%;
+}
+
+#editAnnounceCatAndType input[type=radio] {
+    margin-right:0.5em;
+}
+
+#editAnnounceCatAndType label {
+    white-space: nowrap;
+}
+
+#editAnnounceCatAndType > * {
+    margin:auto auto auto 0px;
+    margin-right: clamp(20px, 2vw, 20px);
+}
+
+.thumbs {
+    transition: all 0.3s ease;
+}
+
+.thumbsup:hover {
+    box-shadow: 0 2px 19px rgb(15, 172, 15);
+    background: rgb(15, 172, 15, 0.2);
+    transition: all 0.3s ease;
+}
+
+.thumbsdown:hover {
+    box-shadow: 0 2px 19px rgb(236, 11, 11);
+    background: rgba(255, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.stars {
+    display: flex;
+    margin:auto;
+}
+
+.stars > * {
+    margin:auto 5px auto 0px;
+}
+
+.review_thumbs > * {
+    margin:auto 5px auto 0px;
+}
+
+#announce {
+    border:1px solid lightgrey;
+    width:95%;
+    margin:auto;
+    padding:10px;
+    border-radius: 20px;
+    margin-top:20px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+#authorInfos {
+    text-align: right;
+    border-bottom: 2px dotted lightblue;
+    padding-bottom: 5px;
+}
+
+#category {
+    font-size:1.5em;
+}
+
+#description {
+    text-align: left;
+    font-size: 1.5em;
+    flex: 1;
+}
+
+#announceToolbar {
+    width:95%;
+    margin-top:10px;
+    
+}
+
+#announceToolbar form {
+    display:flex;
+    width:100%;
+    text-align: center;
+}
+
+#announceToolbar form input {
+    margin:auto;
+}
+
+#review {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 95%;
+    margin:auto auto 20px auto;
+    padding:10px;
+    border:1px solid lightgrey;
+    border-radius: 20px;
+    margin-top:20px;
+}
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position: absolute;
+    display: none;
+}
+.rate:not(:checked) > label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+#reviewBox {
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+#author {
+    font-weight: bold;
+}
+
+.legendCircle {
+    width:2em; 
+    height:2em; 
+    margin-right:1em;
+    border-radius:20px;
+}
+
+#titreEtNote {
+    display: flex;
+    width: 95%;
+    align-items: center;
+    min-width: 740px;
+}
+
+#intitule {
+    margin-right: auto;
+    font-size: 2em;
+    font-weight: bold;
+}

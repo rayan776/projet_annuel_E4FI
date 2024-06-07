@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <link rel="stylesheet" href="{% static 'css/announces/style.css' %}"/>
+    <script src="{% static 'scripts/announces/scripts_index.js' %}"></script>
+    <script src="{% static 'scripts/announces/scripts_popup.js' %}"></script>
+    <script src="{% static 'js/tab_container.js' %}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block privatemessages %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="tab-container">
+        <div class="tab active-tab" style="margin-right:10px" onclick="openTab('announcesMapParent')">Carte</div>
+        <div class="tab" onclick="openTab('announcesTable')">Tableau</div>
+    </div>
+
+    <div id="announcesTopBar" class="displayFlex">
+        <button id="btnSearchAnnounces" class="buttons_main">Rechercher des annonces</button>
+        <button id="btnShowLegende" class="buttons_main">Afficher la légende</button>
+        {% if isConnected and not level == "banned" %}
+        <button id="btnNewAnnounce" class="buttons_main">Déposer une annonce</button>
+        {% endif %}
+    </div>
+
+    <div class="active-content tab-content" id="announcesMapParent">
+        {{ map | safe}}
+    </div>
+
+    <div class="tab-content" id="announcesTable">
+        <div id="announces_table" class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Titre</td>
+                        <td>Catégorie</td>
+                        <td>Date</td>
+                        <td>Localisation</td>
+                        <td>Auteur</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for announce in announces_list %}
+                    {% if announce.valid == 0 %}
+                    <tr class="table-danger">
+                    {% elif announce.typeAnnounce == 1 %}
+                    <tr class="table-info">
+                    {% elif announce.typeAnnounce == 2 %}
+                    <tr class="table-success">
+                    {% endif %}
+                        <td><a href="{% url 'viewAnnounce' announce.idAnnounce %}">{{ announce.intitule }}</a></td>
+                        <td>{{ announce.catName }}</td>
+                        <td>{{ announce.dateAnnounce|date:"d F Y" }}</td>
+                        <td>{{announce.localisation.city}}{{ announce.localisation.town }}{{announce.localisation.village}}, {{ announce.localisation.state }}, {{ announce.localisation.country }}</td>
+                        <td><a href="{% url 'viewProfile' announce.username %}">{{ announce.lastname }} {{ announce.firstname }} ({{ announce.username }})</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="announceBox coup2pouce-box" id="searchDiv">
+        <div style="width:100%; text-align: right;">
+            <i id="btnCloseSearchBox" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+        </div>
+        <div style="font-weight: bold;">Type d'annonce</div>
+        <form action="http://127.0.0.1:8000/announces/" method="POST">
+            <input type="hidden" name="whatToDo" value="search">
+            {% csrf_token %}
+            <div class="displayFlex">
+                <div style="margin-right:auto">
+                    <input type="checkbox" class="form-check-input" id="announceType1" name="announceType1" value="ok" checked/>
+                    <label for="announceType1">Je propose</label>
+                </div>
+                <div style="margin-left:auto">
+                    <input type="checkbox" class="form-check-input" id="announceType2" name="announceType2" value="ok"/>
+                    <label for="announceType2">Je recherche</label>
+                </div>
+            </div>
+            <div style="margin-top:1em">
+                <div style="font-weight: bold;">Localisation</div>
+                <input type="text" name="announceLocation"/>
+            </div>
+            <div style="margin-top:1em">
+                <div>
+                    <input class="form-check-input" type="checkbox" id="byRadius" name="byRadius" value="yes"/>
+                    <label for="byRadius">Chercher autour d'un rayon de...</label>
+                </div>
+                <div>
+                    <select style="margin-top:0.5em" class="form-control" id="radiusValue" type="text" name="radius">
+                        <option value="10">10 km</option>
+                        <option value="30">30 km</option>
+                        <option value="50">50 km</option>
+                        <option value="70">70 km</option>
+                        <option value="100">100 km</option>
+                        <option value="200">200 km</option>
+                        <option value="500">500 km</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top:1em">
+                <div style="font-weight: bold;">Postée entre le...</div>
+                <input type="date" id="announceDate1" name="announceDate1"/>
+            </div>
+            <div style="margin-top:1em">
+                <div style="font-weight: bold;">et le...</div>
+                <input type="date" id="announceDate2" name="announceDate2"/>
+            </div>
+            <div style="margin-top:1em">
+                <div style="font-weight: bold;">Titre</div>
+                <input type="text" name="announceTitle"/>
+            </div>
+            <div style="margin-top:1em; text-align: left;">
+                <div style="font-weight: bold;">Catégories</div>
+                <div style="margin-top:1em">
+                    {% for category in categories %}
+                    <div class="form-check">
+                        <input id="checkbox_category_{{ category.idCategory }}" class="form-check-input" type="checkbox" name="categories[]" value="{{ category.idCategory }}" checked>
+                        <label class="form-check-label" for="checkbox_category_{{category.idCategory}}">{{ category.categoryName }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div style="margin-top:auto">
+                <input type="submit" class="buttons_main" value="Rechercher"/>
+            </div>
+        </form>
+    </div>
+
+    <div class="announceBox coup2pouce-box" id="newAnnounceDiv">
+        <div style="width:100%; text-align: right;">
+            <i id="btnCloseNewAnnounceBox" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+        </div>
+        <div style="font-weight: bold;">Type d'annonce</div>
+        <form method="POST" action="http://127.0.0.1:8000/announces/">
+            <input type="hidden" name="whatToDo" value="new"/>
+            {% csrf_token %}
+            <div class="displayFlex">
+                <div style="margin-right:auto">
+                    <input type="radio" class="form-check-input" name="announceType" value="1" checked/>
+                    <label for="announceType1">Je propose</label>
+                </div>
+                <div style="margin-left:auto">
+                    <input type="radio" class="form-check-input" name="announceType" value="2"/>
+                    <label for="announceType2">Je recherche</label>
+                </div>
+            </div>
+            <div style="margin-top:1em">
+                <div style="font-weight: bold;">Localisation</div>
+                <div style="font-size: 0.8em">Soyez le plus précis possible</div>
+                <input type="text" name="announceLocation"/>
+            </div>
+            <div style="margin-top:1em">
+                <div style="font-weight: bold;">Titre</div>
+                <div style="font-size: 0.8em;">Il doit faire au moins 10 caractères</div>
+                <input type="text" name="announceTitle"/>
+            </div>
+            <div style="margin-top:1em">
+                <div style="font-weight: bold;">Catégorie</div>
+                <div>
+                    <select class="form-control" style="width:100%; height:2.5em" name="announceCat">
+                        {% for category in categories %}
+                        <option value="{{ category.idCategory }}">{{ category.categoryName }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top:1em">
+                <div style="font-weight:bold;">Description</div>
+                <div>
+                    <textarea name="announceDescription" rows="5" class="form-control"></textarea>
+                </div>
+            </div>
+            <div style="margin-top:auto">
+                <input type="submit" class="buttons_main" value="Déposer"/>
+            </div>
+        </form>
+    </div>
+
+    <div id="legende" class="announceBox coup2pouce-box">
+        <div style="width:100%; text-align: right;">
+            <i id="btnCloseLegende" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+        </div>
+        <div style="font-weight: bold;">Légende</div>
+        <div style="margin-top:1em; display:flex; flex-direction: column;">
+            {% if isConnected or level == "admin" %}
+            <div class="displayFlex">
+                <div class="legendCircle" style="background-color: red"></div>
+                <div style="margin-top:auto; margin-bottom: auto;">Annonce non approuvée</div>
+            </div>
+            {% endif %}
+            <div style="margin-top:1em; text-align: left;" class="displayFlex">
+                <div class="legendCircle" style="background-color: #38A9DC"></div>
+                <div style="margin-top:auto; margin-bottom: auto;">Annonce de proposition</div>
+            </div>
+            <div style="margin-top:1em; text-align: left" class="displayFlex">
+                <div  class="legendCircle"style="background-color: #6FAB25"></div>
+                <div style="margin-top:auto; margin-bottom: auto;">Annonce de recherche</div>
+            </div>
+        </div>
+    </div>
+
+    {% if announce_message != "" %}
+        <div id="announcePopup" class="popup">
+            <div style="width:100%; text-align: right;">
+                <i id="btnClosePopup" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+            </div>
+            <div style="padding:5px">
+                {% if nb_announces != "" %}
+                    <div style="font-size:4em">{{ nb_announces }}</div>
+                {% endif %}
+                <div style="font-size:2em">{{ announce_message }}</div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block change_background_link %}
+        {{ block.super }}
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <link rel="stylesheet" href="{% static 'css/accounts/accounts.css' %}"/>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block privatemessages %}
+    {% if isConnected %}
+    {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    
+        <h1>
+            {% if not isConnected %}
+                Connectez-vous
+            {% endif %}
+        </h1>
+        <div>
+            {% if login == 'w' %}
+            <div id="failedLoginMsg">Les identifiants saisis n'ont pas permis de vous connecter.</div>
+            {% endif %}
+        </div>
+        <div id="loginForm">
+            {% if not isConnected %}
+                <div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div>Login</div>
+                        <input name="username" type="text"/>
+                        <div style="margin-top:10px">Mot de passe</div>
+                        <input name="pwd" type="password"/>
+                        <div style="margin-top:20px">
+                            <input class="buttons_main" type="submit" value="Connexion"/>
+                            <div>
+                                <a style="display:block; margin:auto" href="{% url 'resetPassword' %}" class="buttons_main">J'ai oublié mon mot de passe</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div style="margin-top:30px; padding-top:5px; border-top:1px solid lightgrey">
+                    <div>Vous n'êtes pas inscrit ? Rejoignez l'aventure 1coup2pouce.</div>
+                    <a style="display:inline-block; margin:auto; margin-top:10px" href="http://127.0.0.1:8000/accounts/register" class="buttons_main">S'inscrire</a>
+                </div>
+            {% else %}
+                <div style="margin-top:20px">
+                    <div style="font-size:20px">Vous êtes connecté sous le nom de {{ login }}.</div>
+                    <a style="font-size:20px" href="http://127.0.0.1:8000/">Retourner en page d'accueil</a>
+                </div>
+            {% endif %}
+        </div>
+    
+{% endblock %}
+
+{% block change_background_link %}
+        
+{% endblock %}

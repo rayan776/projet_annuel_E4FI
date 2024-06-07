@@ -1,0 +1,211 @@
+input {
+    width:15em;
+}
+
+#registerMsg {
+    margin-top:20px;
+    font-weight:bold;
+    color:red;
+}
+
+#registerMsg {
+    margin:auto auto 20px auto;
+}
+
+.form_info {
+    font-size:14px; 
+    font-style: italic; 
+    margin-bottom:5px;
+}
+
+#failedLoginMsg {
+    margin:auto auto 20px auto;
+    font-weight: bold; 
+    color:red; 
+    width:30em;
+}
+
+#loginForm {
+    border:2px solid blue;
+    border-radius: 20px;
+    align-content:center;
+    text-align:center;
+    width:40em;
+    margin:0 auto;
+    box-shadow:rgba(8, 23, 247, 0.4) 0px 0px 15px 5px;
+    padding:20px;
+}
+
+.resetPwdForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.resetPwdForm #header {
+    font-size:2em; 
+    font-weight:bold; 
+    padding-bottom:5px; 
+    border-bottom:1px dashed blue; 
+    margin-bottom:15px;
+}
+
+#secretQheader {
+    font-weight:bold; 
+    padding-top:5px; 
+    border-top:1px dashed blue; 
+    margin-top:20px;
+    font-size:1.5em;
+    width:100%;
+}
+
+.secret_sections {
+    opacity:0;
+    transition:all 0.3s ease;
+    height:0px;
+}
+
+#username_not_found {
+    color:red;
+    margin-top:20px;
+}
+
+#secretQuestion {
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#secret_answer_result {
+    margin-top:10px;
+}
+
+#reset_pwd_btn {
+    pointer-events: none;
+}
+
+#label_new_pwd {
+    width: 100%; 
+    margin-top:20px; 
+    padding-top:5px; 
+    border-top:1px dashed blue; 
+    margin-bottom:15px;
+}
+
+.resetPwdForm > * {
+    margin: auto;
+}
+
+#loginForm input {
+    margin-bottom:10px;
+}
+
+#loginForm .buttons_main {
+    width:50%;
+}
+
+#alreadyRegistered {
+    padding-top:5px;
+    border-top:1px solid lightgrey;
+}
+
+#alreadyRegistered a {
+    display:inline-block;
+    margin:auto;
+    width:20em;
+    margin:10px 0px 15px 0px;
+}
+
+.user-infos-box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding:10px;
+    border:2px solid blue;
+    border-radius: 20px;
+    width: 70%;
+    margin: auto;
+    box-shadow: rgba(8, 23, 247, 0.4) 0px 0px 15px 5px;
+}
+
+.user-infos-box #username {
+    font-size: 2em;
+    padding-bottom:5px;
+    border-bottom: 2px dashed skyblue;
+}
+
+.view_user_info {
+    margin-top:10px;
+}
+
+#user_actions {
+    padding-top:5px;
+    border-top:2px dashed darkcyan;
+}
+
+#manage_account_header {
+    border-top:2px dashed lightblue;
+    padding-top:5px;
+    font-size:1.5em;
+    padding-bottom:5px;
+    border-bottom:1px dotted blue;
+    margin-bottom:10px;
+}
+
+#manage_account_box input {
+    width:100%;
+}
+
+#manage_account_box label {
+    margin-top:10px;
+}
+
+#change_pwd button {
+    margin-top:15px;
+}
+
+#blocked_list {
+    height:20em;
+    overflow:auto;
+}
+
+.blocked-list-unblock-btn-icon {
+    color:green;
+    transition: all 0.3s ease;
+}
+
+.blocked-list-unblock-btn-icon:hover {
+    box-shadow: 0 2px 20px rgb(15, 172, 15);
+    background: rgb(15, 172, 15, 0.2);
+    transition: all 0.3s ease;
+}
+
+#info {
+    width: 20em;
+    transition:transform 0.3s ease, opacity 0.3s ease;
+}
+
+.info-bubble {
+    position: absolute;
+    pointer-events: none;
+    padding:10px;
+    border:1px solid grey;
+    border-radius: 20px;
+    text-align: center;
+    background-color: white;
+    color:black;
+    opacity:0;
+    transition: opacity 0.5s ease;
+}
+
+.register-input {
+    display: flex;
+    width: 50%;
+    margin: auto;
+}
+
+.register-input svg {
+    margin: auto;
+    position: relative;
+    left: 5px;
+    bottom:5px;
+}

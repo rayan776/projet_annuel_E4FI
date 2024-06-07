@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <link rel="stylesheet" href="{% static 'css/accounts/accounts.css' %}"/>
+    <script src="{% static 'scripts/view_profile.js' %}"></script>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+{% endblock %}
+
+{% block accountbubble %}
+    {% if isConnected %}
+        {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block privatemessages %}
+    {% if isConnected %}
+    {{ block.super }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if not view_profile_infos.user_found %}
+        <div>L'utilisateur recherché n'existe pas.</div>
+    {% else %}
+        {% if isConnected and current_user_ID == view_profile_infos.idUser %}
+        <h1 style="margin:20px 0px 50px 0px">Votre profil</h1>
+        {% else %}
+        <h1 style="margin:20px 0px 50px 0px">Profil</h1>
+        {% endif %}
+        <div class="user-infos-box">
+            <div id="username"
+                {% if view_profile_infos.username_color %} 
+                    style="color:{{ view_profile_infos.username_color }}"
+                {% endif %}
+            >
+                <div>{{ view_profile_infos.username }}</div>
+                <div style="font-size: 0.7em;">{{ view_profile_infos.role }}</div>
+                {% if view_profile_infos.role == "Banni" %}
+                    <div style="font-size:0.6em">Si quelqu'un est banni, il ne peut ni poster de nouvelles annonces, ni commenter d'annonces. <br> Ses commentaires ne sont plus considérés dans le calcul des scores.</div>
+                {% endif %}
+            </div>
+            <div style="font-weight:bold; font-size:1.25em; margin-bottom:10px"> {{ view_profile_infos.lastname }} {{ view_profile_infos.firstname }}</div>
+            <div class="view_user_info" style="font-weight:bold"> Membre depuis le </div>
+            <div>{{ view_profile_infos.date_register|date:"d F Y G:i" }}</div>
+            <div class="view_user_info" style="font-weight:bold"> Annonces postées</div>
+            <div> {{ view_profile_infos.nb_announces }}</div>
+            {% if view_profile_infos.nb_announces > 0 %}
+            <div class="view_user_info" style="font-weight:bold"> Score (moyenne des annonces)</div>
+                {% if view_profile_infos.score <= 0.0000000001 %}
+                    <div>Pas d'évaluations</div>
+                {% else %}
+                <div style="display:flex; justify-content: center;">
+                    {% for star in stars %}
+                        {% if star < view_profile_infos.score %}
+                        <div style="color:#ffc700; font-size:1.2em">★ </div>
+                        {% else %}
+                        <div style="color:grey; font-size:1.2em">★ </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div style="align-content: center; margin-left:10px">{{ view_profile_infos.score|floatformat:1 }}/5</div>
+                </div>
+                {% endif %}
+            {% endif %}
+            <div class="view_user_info" style="font-weight:bold"> Commentaires postés </div> 
+            <div>{{ view_profile_infos.nb_comments }}</div>
+            {% if isConnected and current_user_ID != view_profile_infos.idUser  %}
+            <div id="user_actions">
+                <div style="display: flex;">
+                    <a target="_blank" class="buttons_main" href="http://127.0.0.1:8000/privatemessages/?writeTo={{ view_profile_infos.username }}"><div style="display:flex"><i style="padding-right:25px; margin:auto" class="fa-solid fa-envelope"></i><div>Contacter</div></div></a>
+                    <form style="display:flex; flex:1" action="" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="idUserTarget" value="{{ view_profile_infos.idUser }}">
+                        {% if level == "admin" %}
+                            {% if view_profile_infos.privilege_level > 0 %}
+                                <button style="margin-left:auto" type="submit" class="buttons_main buttons_danger" name="banUser" value="Bannir">
+                                    <div style="display:flex">
+                                    <i style="padding-right:25px; margin:auto" class="fa-solid fa-ban"></i>
+                                    <div>Bannir</div>
+                                    </div>
+                                </button>
+                            {% else %}
+                                <button style="margin-left:auto" type="submit" class="buttons_main buttons_allow" name="unbanUser" value="Débannir">
+                                    <div style="display:flex">
+                                    <i style="padding-right:25px; margin:auto" class="fa-solid fa-user-check"></i>
+                                    <div>Débannir</div>
+                                    </div>
+                                </button>
+                            {% endif %}
+                        {% endif %}
+                        {% if view_profile_infos.blocked %}
+                                <button style="margin-left:auto" type="submit" class="buttons_main buttons_allow" name="unblockUser" value="Débloquer">
+                                    <div style="display:flex">
+                                    <i style="padding-right:25px; margin:auto" class="fa-solid fa-unlock"></i>
+                                    <div>Débloquer</div>
+                                    </div>
+                                </button>
+                        {% else %}
+                                <button style="margin-left:auto" type="submit" class="buttons_main buttons_danger" name="blockUser" value="Bloquer">
+                                    <div style="display:flex">
+                                    <i style="padding-right:25px; margin:auto" class="fa-solid fa-lock"></i>
+                                    <div>Bloquer</div>
+                                    </div>
+                                </button>
+                        {% endif %}
+                    </form>
+                </div>
+                {% if view_profile_infos.blocked %}
+                    <div>Vous avez bloqué cet utilisateur, vous ne pouvez pas échanger par messages privés.</div>
+                {% endif %}
+
+                {% if view_profile_infos.has_blocked_current_user %}
+                    <div>Cet utilisateur vous a bloqué, vous ne pouvez pas échanger par messages privés.</div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if isConnected and current_user_ID == view_profile_infos.idUser %}
+                <div id="manage_account_box">
+                    <div id="manage_account_header">Gérez votre compte</div>
+                    <div id="manage_account_btns" style="display:flex">
+                        <form id="change_pwd" style="width: 33%; display:flex; flex-direction:column; padding-right:10px; margin-right:10px; border-right:1px dotted blue" action="" method="POST">
+                            {% csrf_token %}
+                            <div style="flex:1">
+                                <div style="font-weight:bold;">Changez votre mot de passe</div>
+                                <label for="actual_pwd">Mot de passe actuel</label>
+                                <input id="actual_pwd" type="password" name="actual_pwd">
+                                <label for="new_pwd">Nouveau mot de passe</label>
+                                <input id="new_pwd" type="password" name="new_pwd">
+                                <label for="new_pwd_conf">Confirmer le nouveau mot de passe</label>
+                                <input id="new_pwd_conf" type="password" name="new_pwd_conf">
+                            </div>
+                            <button type="submit" class="buttons_main" name="change_pwd">Changer</button>
+                        </form>
+                        <form id="change_pwd" style="width: 33%; display:flex; flex-direction:column; padding-right:10px; border-right:1px dotted blue" action="" method="POST">
+                            {% csrf_token %}
+                            <div style="flex:1">
+                                <div style="font-weight:bold;">Supprimez votre compte</div>
+                                <div style="color:red">Cette décision est irréversible. Toutes vos annonces, commentaires, messages privés seront supprimés du site.</div>
+                                <label for="actual_pwd">Mot de passe actuel</label>
+                                <input id="actual_pwd" type="password" name="actual_pwd">
+                                <label for="actual_pwd_conf">Confirmez votre mot de passe actuel</label>
+                                <input id="actual_pwd_conf" type="password" name="actual_pwd_conf">
+                            </div>
+                            <button type="submit" class="buttons_main buttons_danger" name="delete_my_account">Supprimer mon compte</button>
+                        </form>
+                        <div id="blocked_list" style="width: 33%; display:flex; flex-direction:column">
+                            <div id="blocked_list_content" style="flex:1; margin:auto; width:90%">
+                                <div style="font-weight:bold; padding-bottom:5px">Utilisateurs bloqués</div>
+                                {% for dictionary in view_profile_infos.blocked_list %}
+                                    <div id="blocked_{{ dictionary.idUser }}" style="display:flex">
+                                        <div style="flex:1"><a href="{% url 'viewProfile' dictionary.username %}">{{ dictionary.lastname }} {{ dictionary.firstname }} ({{ dictionary.username }})</a></div>
+                                        <div id="unblock_{{ dictionary.idUser }}" class="blocked-list-unblock-btn">
+                                            <i style="margin:auto; color:green" class="fa-solid fa-check blocked-list-unblock-btn-icon"></i>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="info-bubble" id="info-unblock">Débloquer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if popup != "" %}
+        <div id="viewProfilePopup" class="popup">
+            <div style="width:100%; text-align: right;">
+                <i id="btnClosePopup" class="btnclose fa-solid fa-circle-xmark fa-lg"></i>
+            </div>
+            <div style="padding:5px">
+                <div style="font-size:2em">{{ popup }}</div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block change_background_link %}
+        {% if isConnected %}
+            {{ block.super }}
+        {% endif %}
+{% endblock %}

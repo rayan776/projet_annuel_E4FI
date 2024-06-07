@@ -112,3 +112,6 @@ INSERT INTO category (catName) VALUES ('Bâtiment et travaux publics');
 INSERT INTO category (catName) VALUES ('Nettoyage');
 INSERT INTO category (catName) VALUES ('Voyages');
 INSERT INTO category (catName) VALUES ('Alimentation');
+INSERT INTO category (catName) VALUES ('Informatique');
+INSERT INTO category (catName) VALUES ('Sport');
+INSERT INTO category (catName) VALUES ('Enseignement');

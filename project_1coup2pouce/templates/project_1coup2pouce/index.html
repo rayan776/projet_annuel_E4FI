@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block linkrel %}
+    <script src="{% static 'js/show_img.js' %}"></script>
+{% endblock %}
 
 {% block sidebar %}
         {{ block.super }}
@@ -16,11 +21,41 @@
     {% endif %}
 {% endblock %}
 
+{% block bodyblock %}
+    <div id="invisible"></div>
+{% endblock %}
+
 {% block content %}
     <div id="home_content">
         <h1 style="font-size:20px;">Un coup de pouce pour toutes vos recherches entre particuliers</h1>
         
         <div>Rejoignez-nous, proposez vos services ou cherchez ce qui vous intéresse.</div>
+
+        <div style="display:flex">
+            <div style="display:flex; width:40%; margin:30px auto 0px 30px; flex-direction:column; padding:10px; border:1px solid lightgrey; border-radius:20px">
+                <div style="font-size:2em; padding-bottom:10px; border-bottom:1px dashed blue">Recherchez des annonces</div>
+                <div>Trouvez ce qui vous intéresse et ce dont vous avez besoin.</div>
+                <img id="search_announces_image" class="homepage_images" src="{% static 'img/search_announces.png' %}"/>
+                <div style="font-style:italic; margin-top:15px">Pour tous vos besoins et vos envies.</div>
+
+                <div style="font-size:2em; margin-top:20px" >Participez à la vie du site</div>
+                <div>Proposez vos services, ou exprimez vos recherches.</div>
+                <img id="view_announces_image" class="homepage_images" src="{% static 'img/view_announces.png' %}"/>
+                <div style="font-style:italic; margin-top:15px">Commentez les annonces et évaluez-les afin d'éclairer les autres dans leur choix.</div>
+            </div>
+
+            <div style="display:flex; width:40%; margin:30px 30px 0px auto; flex-direction:column; padding:10px; border:1px solid lightgrey; border-radius:20px">
+                <div style="font-size:2em; padding-bottom:10px; border-bottom:1px dashed blue">Dernières annonces</div>
+
+                {% for announce in latest_announces %}
+                    <a style="margin-bottom:15px" href="{% url 'viewAnnounce' announce.idAnnounce %}">{{ announce.intitule }}</a>
+                {% endfor %}
+                
+            </div>
+
+        </div>
+
+        <div id="show_image"><img id="show_image_img"/></div>
     </div>
 {% endblock %}
 

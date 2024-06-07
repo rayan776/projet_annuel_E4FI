@@ -233,9 +233,24 @@ input[type="text"]:focus, input[type="text"]:hover, input[type="password"]:focus
     border:1px solid green;
 }
 
+#invisible {
+    position: absolute;
+    z-index: 2000;
+    height: 1200px;
+    width: 2000px;
+    background: rgba(0, 0, 0, 0.7);
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+#home_content {
+    margin-bottom:40px;
+}
+
 #home_content h1 {
     margin-top: 40px;
-    border-bottom:1px solid black;
+    border-bottom:2px dashed lightblue;
     padding-bottom:15px;
 }
 
@@ -319,4 +334,25 @@ footer {
 
 td {
     font-size:0.9em;
+}
+
+.homepage_images {
+    border:1px solid blue; 
+    width:50%; 
+    margin:30px auto 0px auto;
+    height:50%;
+    transition: all 0.3s ease;
+}
+
+.homepage_images:hover {
+    box-shadow: 2px 5px 19px blue;
+    transition: all 0.3s ease;
+}
+
+#show_image {
+    position: absolute;
+    display: none;
+    pointer-events: none;
+    box-shadow: 2px 5px 19px blue;
+    border:1px solid blue;
 }

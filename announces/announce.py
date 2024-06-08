@@ -256,7 +256,7 @@ class Announce:
                 if (edit_announce_tuple[0]):
                     edit_infos = edit_announce_tuple[1]
                     update_query = f"UPDATE announce SET typeAnnounce = %s, intitule = %s, description = %s, latitude = %s, longitude = %s, localisation = %s, valid = 0, idCat = %s WHERE idAnnounce = %s"
-                    values = (edit_infos["typeAnnounce"], edit_infos["intitule"], edit_infos["description"], edit_infos["localisation"]["lat"], edit_infos["localisation"]["lon"], str(edit_infos["localisation"]["address"]), edit_infos["idCat"], idAnnounce)
+                    values = (edit_infos["typeAnnounce"], edit_infos["intitule"], f"[Modifié le {datetime.now().strftime("%d/%m/%Y")} à {datetime.now().strftime("%H:%M")}] - " + edit_infos["description"], edit_infos["localisation"]["lat"], edit_infos["localisation"]["lon"], str(edit_infos["localisation"]["address"]), edit_infos["idCat"], idAnnounce)
                     self.mySqlConnector.execute_prepared_query(update_query, values, False)
                     success = True
         except:

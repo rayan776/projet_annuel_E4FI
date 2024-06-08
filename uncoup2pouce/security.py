@@ -3,7 +3,7 @@ from Cryptodome.Cipher import AES
 from Cryptodome.Random import get_random_bytes
 import ast
 from random import Random
-from project_1coup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
+from uncoup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
 
 def get_random_token(length):
     random = Random()

@@ -1,5 +1,5 @@
-from project_1coup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
-from project_1coup2pouce.users import Users
+from uncoup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
+from uncoup2pouce.users import Users
 
 class UserProfile:
 

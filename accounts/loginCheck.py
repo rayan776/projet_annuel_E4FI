@@ -1,5 +1,5 @@
-from project_1coup2pouce import security
-from project_1coup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
+from uncoup2pouce import security
+from uncoup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
 
 class LoginCheck:
     username = ""

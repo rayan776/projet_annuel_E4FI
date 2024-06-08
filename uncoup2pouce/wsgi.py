@@ -1,5 +1,5 @@
 """
-WSGI config for project_1coup2pouce project.
+WSGI config for uncoup2pouce project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project_1coup2pouce.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'uncoup2pouce.settings')
 
 application = get_wsgi_application()

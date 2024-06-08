@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render
-from project_1coup2pouce.users import Users
-from project_1coup2pouce.homepage import get_latest_announces
+from uncoup2pouce.users import Users
+from uncoup2pouce.homepage import get_latest_announces
 
 def index(request):
     context = dict()
@@ -16,4 +16,4 @@ def index(request):
         else:
             context["login"] = request.session.get("login")
 
-    return render(request, "project_1coup2pouce/index.html", context)
+    return render(request, "uncoup2pouce/index.html", context)

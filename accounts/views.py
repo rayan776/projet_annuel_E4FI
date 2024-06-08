@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from accounts.loginCheck import LoginCheck
 from accounts.register import Register
-from project_1coup2pouce.users import Users
+from uncoup2pouce.users import Users
 from accounts.user_profile import UserProfile
 from django.views.decorators.csrf import csrf_exempt
 

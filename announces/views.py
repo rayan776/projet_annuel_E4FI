@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from announces.announce import Announce
 from announces.map_generator import MapGenerator
-from project_1coup2pouce.users import Users
+from uncoup2pouce.users import Users
 import ast
 
 def index(request):

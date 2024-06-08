@@ -1,7 +1,7 @@
 import ast
-from project_1coup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
-from project_1coup2pouce.users import Users
-import project_1coup2pouce.misc as misc
+from uncoup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
+from uncoup2pouce.users import Users
+import uncoup2pouce.misc as misc
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from datetime import datetime

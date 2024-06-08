@@ -1,5 +1,5 @@
-from project_1coup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
-import project_1coup2pouce.security as security
+from uncoup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
+import uncoup2pouce.security as security
 import ast
 
 class Users:

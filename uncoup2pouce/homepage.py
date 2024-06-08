@@ -1,4 +1,4 @@
-from project_1coup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
+from uncoup2pouce.mysqlConnectionSingleton import MySQLConnectionSingleton
 
 def get_latest_announces(limit):
     query = f"SELECT idAnnounce, intitule FROM announce ORDER BY dateAnnounce DESC LIMIT %s"

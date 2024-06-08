@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from project_1coup2pouce.users import Users
+from uncoup2pouce.users import Users
 from stats.stats import Stats
 
 # Create your views here.
